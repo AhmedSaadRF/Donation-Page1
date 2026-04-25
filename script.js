@@ -71,6 +71,26 @@
             window.scrollTo(0, 0);
         }
 
+        function closeMobileMenu() {
+            const navLinks = document.getElementById('nav-links');
+            const navToggle = document.getElementById('nav-toggle');
+            if (navLinks) navLinks.classList.remove('is-open');
+            if (navToggle) {
+                navToggle.setAttribute('aria-expanded', 'false');
+                navToggle.setAttribute('aria-label', 'Open menu');
+            }
+        }
+
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('nav-links');
+            const navToggle = document.getElementById('nav-toggle');
+            if (!navLinks || !navToggle) return;
+            const nextOpen = !navLinks.classList.contains('is-open');
+            navLinks.classList.toggle('is-open', nextOpen);
+            navToggle.setAttribute('aria-expanded', nextOpen ? 'true' : 'false');
+            navToggle.setAttribute('aria-label', nextOpen ? 'Close menu' : 'Open menu');
+        }
+
         function renderNavbar(user) {
             const navLinks = document.getElementById('nav-links');
             if (user) {
@@ -81,6 +101,7 @@
                 `;
                 document.getElementById('btn-logout').addEventListener('click', (e) => {
                     e.preventDefault();
+                    closeMobileMenu();
                     setCurrentUser(null);
                     window.location.hash = '#login';
                 });
@@ -90,6 +111,9 @@
                     <a href="#register">Register</a>
                 `;
             }
+
+            // Keep menu closed after rerender/navigation
+            closeMobileMenu();
         }
 
         window.addEventListener('hashchange', navigate);
@@ -282,9 +306,22 @@
         }
 
         // --- Cursor Follower Logic ---
+        function shouldEnableCustomCursor() {
+            const hasFinePointer = typeof window.matchMedia === 'function'
+                ? window.matchMedia('(hover: hover) and (pointer: fine)').matches
+                : true;
+            const wideEnough = window.innerWidth > 1024;
+            return hasFinePointer && wideEnough;
+        }
+
         function initCursor() {
             const cursorFollower = document.getElementById('cursor-follower');
             if (cursorFollower) {
+                if (!shouldEnableCustomCursor()) {
+                    cursorFollower.style.display = 'none';
+                    return;
+                }
+
                 let cursorX = window.innerWidth / 2, cursorY = window.innerHeight / 2;
                 let mouseX = cursorX, mouseY = cursorY;
 
@@ -319,6 +356,31 @@
         window.addEventListener('load', () => {
             initCursor();
             navigate();
+
+            // Mobile menu toggle + close behaviors (event delegation)
+            const navToggle = document.getElementById('nav-toggle');
+            const navLinks = document.getElementById('nav-links');
+            if (navToggle) {
+                navToggle.addEventListener('click', () => toggleMobileMenu());
+            }
+
+            // Close menu when selecting a link
+            if (navLinks) {
+                navLinks.addEventListener('click', (e) => {
+                    const a = e.target?.closest?.('a');
+                    if (a) closeMobileMenu();
+                });
+            }
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                const target = e.target;
+                const isInsideNav = target && (target.closest?.('#navbar') || target.closest?.('#nav-links'));
+                if (!isInsideNav) closeMobileMenu();
+            });
+
+            // If user rotates/resizes to desktop, close dropdown
+            window.addEventListener('resize', () => closeMobileMenu());
             
             // Theme toggle logic
             const themeBtn = document.getElementById('theme-toggle');
