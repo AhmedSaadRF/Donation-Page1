@@ -1180,3 +1180,149 @@
                 opacity: 0;
             }
         }
+
+/* --- Stylish Footer --- */
+#main-footer {
+    background-color: var(--card-bg);
+    padding: 4rem 5% 3rem;
+    border-top: 1px solid rgba(226, 232, 240, 0.5);
+    margin-top: 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+#main-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-btn), var(--secondary-btn), transparent);
+}
+
+.footer-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    animation: fadeInFooter 1.2s ease-out;
+}
+
+.footer-logo {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--primary-btn);
+    margin-bottom: 0.5rem;
+    letter-spacing: -1px;
+}
+
+.copyright {
+    color: #64748b;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 2.5rem;
+    opacity: 0.8;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.social-links a {
+    text-decoration: none;
+    font-size: 1.8rem;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: #f8fafc;
+    border-radius: 50%;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+}
+
+.social-links a:hover {
+    transform: translateY(-8px) scale(1.1) rotate(5deg);
+    background: white;
+    border-color: var(--primary-btn);
+    box-shadow: 0 10px 20px rgba(244, 63, 94, 0.1);
+}
+
+body.dark-mode #main-footer {
+    background-color: #1e293b;
+    border-top-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .social-links a {
+    background: #0f172a;
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .social-links a:hover {
+    background: #1e293b;
+    border-color: var(--primary-btn);
+}
+
+@keyframes fadeInFooter {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Professional Icon Styling --- */
+.feature-icon i {
+    background: linear-gradient(135deg, var(--primary-btn), #f97316);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 2.2rem;
+}
+
+.feature-card:nth-child(2) .feature-icon i {
+    background: linear-gradient(135deg, #0ea5e9, #2563eb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.feature-card:nth-child(3) .feature-icon i {
+    background: linear-gradient(135deg, #10b981, #059669);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-icon i {
+    font-size: 3.5rem;
+    color: var(--primary-btn);
+    display: inline-block;
+}
+
+.stat-card:nth-child(2) .stat-icon i {
+    color: var(--secondary-btn);
+}
+
+.stat-card:nth-child(3) .stat-icon i {
+    color: #e11d48;
+}
+
+/* Footer Icon Colors */
+.social-links a[title="WhatsApp"] { color: #25D366; }
+.social-links a[title="Instagram"] { color: #E4405F; }
+.social-links a[title="LinkedIn"] { color: #0077b5; }
+.social-links a[title="GitHub"] { color: #333; }
+
+body.dark-mode .social-links a[title="GitHub"] { color: #f8fafc; }
+
+.social-links a i {
+    font-size: 1.5rem;
+    transition: var(--transition);
+}
+
+.social-links a:hover i {
+    transform: scale(1.15) rotate(5deg);
+}
+
+
